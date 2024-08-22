@@ -18,10 +18,6 @@ const CategoryModal = ({ className = "", style = {}, setAnimal = null,muteteCate
     setAnimal(false);
     refetchCategories();
     console.log(response)
-    // setTimeout(() => {
-    //   alert(JSON.stringify(values, null, 2));
-    //   setSubmitting(false);
-    // }, 400);
   };
 
   return (

@@ -21,7 +21,7 @@ export default function TestComponent() {
   return (
     <main className="m-[8%]">
       <Heading className="text-center mb-[52px]">Assets</Heading>
-      <div className="flex gap-[80px]">
+      <div className="flex flex-wrap gap-[80px]">
         {data &&
           data.length > 0 &&
           data.map(({id, name, imageUrl, category}) => (

@@ -3,13 +3,18 @@
 import { getAnimals, getAnimalsFilter, getCategories } from "@/apis/animalAPIs";
 import Button from "@/components/atoms/Button";
 import LText from "@/components/atoms/LText";
+import AddAnimalModal from "@/components/molecules/AddAnimalModal";
+import AddCategoryModal from "@/components/molecules/AddCategoryModal";
 import Loading from "@/components/molecules/Loading";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const Dynamic = ({ params }) => {
+  const [isAnimal, setAnimal] = useState(false);
+  const [isCategory, setIsCategory] = useState(false);
+  
   const {
     data: categoriesData,
     error: categoriesError,
@@ -27,11 +32,11 @@ const Dynamic = ({ params }) => {
   });
 
   const handleAnimal = () => {
-    console.log("handleAnimals");
+    setAnimal(oldState => !oldState);
   }
 
   const handleCategory = () => {
-    console.log("handle Category");
+    setIsCategory(oldState => !oldState);
   }
 
   if (categoriesLoading || AllanimalsLoading) return <Loading />;
@@ -44,9 +49,9 @@ const Dynamic = ({ params }) => {
           {categoriesData.length > 0 &&
             categoriesData?.map(({ id, category }) =>
               category === params.slug ? (
-                <Link href="/category" key={id} className="button-green">
+                <dev key={id} className="button-green">
                   <LText className="text-green-400">{category} Animal</LText>
-                </Link>
+                </dev>
               ) : (
                 <Link
                   href={`/category/${category}`}
@@ -81,6 +86,8 @@ const Dynamic = ({ params }) => {
           <div className="text-white h-[40vh] w-full flex justify-center items-center">Data Not Available</div>
         )}
       </div>
+      <AddAnimalModal className={isAnimal ? "block" : "hidden"} setAnimal={setAnimal} />
+      <AddCategoryModal className={isCategory ? "block" : "hidden"} setIsCategory={setIsCategory} />
     </main>
   );
 };

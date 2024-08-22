@@ -1,54 +1,21 @@
-// "use client";
-
-// import { getAnimals } from "@/apis/animalAPIs";
-// import Heading from "@/components/atoms/Heading";
-// import { useQuery } from "@tanstack/react-query";
-
-// import Image from "next/image";
-// import { useState } from "react";
-
-// export default function TestComponent() {
-//   const [animals, setAnimals] = useState([]);
-//   const { data, error, isLoading, isSuccess } = useQuery({
-//     queryKey: "test",
-//     queryFn: getAnimals,
-//   });
-
-//   if (isSuccess) {
-//     setAnimals(data);
-//   }
-
-//   console.log(animals);
-
-//   if (isLoading) return <div>Loading...</div>;
-//   if (error) return <div>Error: {error.message}</div>;
-
-//   return (
-//     <main className="m-[8%]">
-//       <Heading className="text-center">Assets</Heading>
-//       <img src={data && data[1]?.imageUrl} />
-//     </main>
-//   );
-// }
-
 "use client";
 
 import { getAnimals } from "@/apis/animalAPIs";
 import Heading from "@/components/atoms/Heading";
 import LText from "@/components/atoms/LText";
+import Loading from "@/components/molecules/Loading";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TestComponent() {
-  // React Query automatically manages the state, so no need for useState here
   const { data, error, isLoading, isSuccess } = useQuery({
-    queryKey: ["test"],
+    queryKey: ["animals"],
     queryFn: getAnimals,
   });
 
-  // console.log(data); // You can log data directly
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
@@ -57,17 +24,17 @@ export default function TestComponent() {
       <div className="flex gap-[80px]">
         {data &&
           data.length > 0 &&
-          data.map((data) => (
-            <div key={data?.id}>
+          data.map(({id, name, imageUrl, category}) => (
+            <Link href={`/category/${category}`} key={id}>
               <Image
                 className="w-[160px] h-[191px] object-contain gap-[42px]"
-                src={data?.imageUrl}
+                src={imageUrl}
                 width={160}
                 height={191}
                 alt="Picture of the author"
               />
-              <LText className="text-center">{data.name}</LText>
-            </div>
+              <LText className="text-center text-white">{name}</LText>
+            </Link>
           ))}
       </div>
     </main>

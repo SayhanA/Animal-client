@@ -10,5 +10,19 @@
 
 *{
   background-color: #000;
-  color: #fff;
+  /* color: #fff; */
+}
+
+.button-red{
+  padding: 14px 30px;
+  border: 2px solid #EF0D0D;
+  border-radius: 50px;
+  color: #EF0D0D !important;
+}
+
+.button-green{
+  padding: 14px 30px;
+  border: 2px solid #058F34;
+  border-radius: 50px;
+  color: #058F34 !important;
 }

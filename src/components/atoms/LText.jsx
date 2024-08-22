@@ -1,8 +1,8 @@
-import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
-const LText = ({className = "", style={}, children = null}) => {
+const LText = ({className = "text-white", style={}, children = null}) => {
   return (
-    <div className={`${className} text-lg`} style={style}>{children}</div>
+    <div className={twMerge(`${className} text-lg`)} style={style}>{children}</div>
   )
 }
 

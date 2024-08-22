@@ -72,16 +72,12 @@ const animalAPIs = {
     }
   },
 
-  async registerOrSignUp(data) {
+  async addCategoryAPIs(data) {
     try {
       const response = await api.post(
-        "/secret/super-admin/admins/signup",
+        "/categories",
         data
       );
-      // if ([200, 201].includes(response.status)) {
-      // 	const { Name, email, isApprovedByAdmin } = response?.data?.data || {};
-      // 	localStorage.setItem('user-details', JSON.stringify({ firstName, lastName, email, isApprovedByAdmin }));
-      // }
 
       return response?.data;
     } catch (error) {
@@ -133,6 +129,7 @@ export const {
   getCategories,
   registerOrSignUp,
   getAnimalsFilter,
+  addCategoryAPIs,
   signIn,
   deleteUser,
   approvedByAdmin,

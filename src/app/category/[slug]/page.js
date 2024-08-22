@@ -1,12 +1,12 @@
 "use client";
 
-import { getAnimals, getAnimalsFilter, getCategories } from "@/apis/animalAPIs";
+import { addCategoryAPIs, getAnimals, getAnimalsFilter, getCategories } from "@/apis/animalAPIs";
 import Button from "@/components/atoms/Button";
 import LText from "@/components/atoms/LText";
 import CategoryModal from "@/components/molecules/CategoryModal";
 import AnimalModal from "@/components/molecules/AnimalModal";
 import Loading from "@/components/molecules/Loading";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -30,6 +30,13 @@ const Dynamic = ({ params }) => {
     queryKey: ["allAnimals", data],
     queryFn: () => getAnimalsFilter({ data }),
   });
+
+  // Add Category APIs call
+  const {mutateAsync: muteteCategory} = useMutation({
+    mutationKey: "mutateCategoryAPI",
+    mutationFn: addCategoryAPIs
+  })
+  
 
   const handleAnimal = () => {
     setAnimal(oldState => !oldState);
@@ -86,7 +93,7 @@ const Dynamic = ({ params }) => {
           <div className="text-white h-[40vh] w-full flex justify-center items-center">Data Not Available</div>
         )}
       </div>
-      <CategoryModal className={isAnimal ? "block" : "hidden"} setAnimal={setAnimal} />
+      <CategoryModal className={isAnimal ? "block" : "hidden"} setAnimal={setAnimal} muteteCategory={muteteCategory} />
       <AnimalModal className={isCategory ? "block" : "hidden"} setIsCategory={setIsCategory} />
     </main>
   );

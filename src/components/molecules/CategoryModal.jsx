@@ -11,9 +11,12 @@ const CategoryModal = ({ className = "", style = {}, setAnimal = null,muteteCate
     setAnimal(false);
   });
 
-  const handleSubmit = async(values, { setSubmitting }) => {
-    toast.error('sldf')
+  const handleSubmit = async(values, { setSubmitting, resetForm }) => {
     const response = await muteteCategory(values);
+    toast.error(response.message);
+    resetForm();
+    setAnimal(false);
+    refetchCategories();
     console.log(response)
     // setTimeout(() => {
     //   alert(JSON.stringify(values, null, 2));

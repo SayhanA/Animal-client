@@ -1,6 +1,12 @@
 "use client";
 
-import { addCategoryAPIs, getAnimals, getAnimalsFilter, getCategories } from "@/apis/animalAPIs";
+import {
+  addCategoryAPIs,
+  getAnimals,
+  getAnimalsFilter,
+  getCategories,
+  postCategoriesAPIs,
+} from "@/apis/animalAPIs";
 import Button from "@/components/atoms/Button";
 import LText from "@/components/atoms/LText";
 import CategoryModal from "@/components/molecules/CategoryModal";
@@ -9,16 +15,17 @@ import Loading from "@/components/molecules/Loading";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Dynamic = ({ params }) => {
   const [isAnimal, setAnimal] = useState(false);
   const [isCategory, setIsCategory] = useState(false);
-  
+
   const {
     data: categoriesData,
     error: categoriesError,
     isLoading: categoriesLoading,
+    refetch: refetchCategories,
   } = useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
@@ -26,25 +33,43 @@ const Dynamic = ({ params }) => {
 
   const data = { category: params.slug };
 
-  const { data: animals, isLoading: AllanimalsLoading } = useQuery({
+  const {
+    data: animals,
+    isLoading: AllanimalsLoading,
+    refetch: allAnimalsRefetch,
+  } = useQuery({
     queryKey: ["allAnimals", data],
     queryFn: () => getAnimalsFilter({ data }),
   });
 
   // Add Category APIs call
-  const {mutateAsync: muteteCategory} = useMutation({
-    mutationKey: "mutateCategoryAPI",
-    mutationFn: addCategoryAPIs
-  })
-  
+  const { mutateAsync: muteteCategory, data: mutateCategorydata } = useMutation(
+    {
+      mutationKey: "mutateCategoryAPI",
+      mutationFn: addCategoryAPIs,
+    }
+  );
+
+  // Post a new animall
+  const { mutateAsync: mutetepostCategories, data: mutatepostCategoriesdata } = useMutation(
+    {
+      mutationKey: "postCategories",
+      mutationFn: postCategoriesAPIs,
+    }
+  );
+
+  useEffect(() => {
+    refetchCategories();
+    allAnimalsRefetch();
+  }, [mutateCategorydata]);
 
   const handleAnimal = () => {
-    setAnimal(oldState => !oldState);
-  }
+    setAnimal((oldState) => !oldState);
+  };
 
   const handleCategory = () => {
-    setIsCategory(oldState => !oldState);
-  }
+    setIsCategory((oldState) => !oldState);
+  };
 
   if (categoriesLoading || AllanimalsLoading) return <Loading />;
   if (categoriesError) return <div>Error: {error.message}</div>;
@@ -52,7 +77,7 @@ const Dynamic = ({ params }) => {
   return (
     <main className="m-[8%]">
       <div className="flex flex-wrap justify-between gap-10">
-        <div className="flex gap-[24px]">
+        <div className="flex flex-wrap gap-[24px]">
           {categoriesData.length > 0 &&
             categoriesData?.map(({ id, category }) =>
               category === params.slug ? (
@@ -90,11 +115,23 @@ const Dynamic = ({ params }) => {
             </Link>
           ))
         ) : (
-          <div className="text-white h-[40vh] w-full flex justify-center items-center">Data Not Available</div>
+          <div className="text-white h-[40vh] w-full flex justify-center items-center">
+            Data Not Available
+          </div>
         )}
       </div>
-      <CategoryModal className={isAnimal ? "block" : "hidden"} setAnimal={setAnimal} muteteCategory={muteteCategory} />
-      <AnimalModal className={isCategory ? "block" : "hidden"} setIsCategory={setIsCategory} />
+      <CategoryModal
+        className={isAnimal ? "block" : "hidden"}
+        setAnimal={setAnimal}
+        muteteCategory={muteteCategory}
+        refetchCategories={refetchCategories}
+      />
+      <AnimalModal
+        className={isCategory ? "block" : "hidden"}
+        setIsCategory={setIsCategory}
+        categoriesData={categoriesData}
+        mutetepostCategories={mutetepostCategories}
+      />
     </main>
   );
 };

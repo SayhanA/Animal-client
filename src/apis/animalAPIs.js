@@ -85,6 +85,10 @@ const animalAPIs = {
     }
   },
 
+  async postCategoriesAPIs(data){
+    console.log(data);
+  },
+
   async signIn(data) {
     try {
       const response = await api.post(
@@ -130,6 +134,7 @@ export const {
   registerOrSignUp,
   getAnimalsFilter,
   addCategoryAPIs,
+  postCategoriesAPIs,
   signIn,
   deleteUser,
   approvedByAdmin,

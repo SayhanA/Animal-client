@@ -87,6 +87,13 @@ const animalAPIs = {
 
   async postCategoriesAPIs(data){
     console.log(data);
+    try {
+      const res = await api.post('animals', data);
+      console.log(res?.data)
+      return res.data;
+    } catch (error) {
+      return error.message;
+    }
   },
 
   async signIn(data) {

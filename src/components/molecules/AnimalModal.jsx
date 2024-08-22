@@ -131,7 +131,7 @@
 
 // export default AnimalModal;
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import LText from "../atoms/LText";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import useOutClick from "@/hooks/useOutClick";
@@ -149,6 +149,7 @@ const AnimalModal = ({
   mutetepostCategories
 }) => {
   const categoryRef = useRef();
+  const [isImgUploading, setIsImgUploading] = useState(false);
 
   const img_hosting_url = `https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`;
 
@@ -158,6 +159,7 @@ const AnimalModal = ({
 
   // Function to handle image upload to imgbb
   const handleImageUpload = async (imageFile) => {
+    setIsImgUploading(true);
     const formData = new FormData();
     formData.append("image", imageFile);
 
@@ -165,11 +167,14 @@ const AnimalModal = ({
       const response = await axios.post(img_hosting_url, formData);
       if (response.data.success) {
         console.log(response.data.data.url);
+        setIsImgUploading(false);
         return response.data.data.url; // Return the image URL after successful upload
       } else {
+        setIsImgUploading(false);
         throw new Error("Image upload failed");
       }
     } catch (error) {
+      setIsImgUploading(false);
       console.error("Image upload error:", error);
       return null;
     }
@@ -190,6 +195,7 @@ const AnimalModal = ({
       mutetepostCategories(formData);
 
       toast.success("Form Submitted");
+      setIsCategory(false);
       resetForm();
     } else {
       alert("Image upload failed. Please try again.");
@@ -275,8 +281,8 @@ const AnimalModal = ({
 
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-black text-white p-[14px] rounded-[8px]"
+                disabled={isSubmitting && isImgUploading}
+                className={`w-full bg-black text-white p-[14px] rounded-[8px] ${isImgUploading && "bg-gray-400 cursor-not-allowed"}`}
               >
                 Submit
               </button>

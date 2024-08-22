@@ -61,7 +61,7 @@ const Dynamic = ({ params }) => {
   useEffect(() => {
     refetchCategories();
     allAnimalsRefetch();
-  }, [mutateCategorydata]);
+  }, [mutateCategorydata, mutatepostCategoriesdata]);
 
   const handleAnimal = () => {
     setAnimal((oldState) => !oldState);

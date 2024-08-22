@@ -3,8 +3,8 @@
 import { getAnimals, getAnimalsFilter, getCategories } from "@/apis/animalAPIs";
 import Button from "@/components/atoms/Button";
 import LText from "@/components/atoms/LText";
-import AddAnimalModal from "@/components/molecules/AddAnimalModal";
-import AddCategoryModal from "@/components/molecules/AddCategoryModal";
+import CategoryModal from "@/components/molecules/CategoryModal";
+import AnimalModal from "@/components/molecules/AnimalModal";
 import Loading from "@/components/molecules/Loading";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -64,8 +64,8 @@ const Dynamic = ({ params }) => {
             )}
         </div>
         <div className="flex flex-wrap gap-4">
-          <Button onClick={handleAnimal}>Add Animal</Button>
-          <Button onClick={handleCategory}>Add Category</Button>
+          <Button onClick={handleCategory}>Add Animal</Button>
+          <Button onClick={handleAnimal}>Add Category</Button>
         </div>
       </div>
       <div className="flex flex-wrap gap-[80px] mt-[71px]">
@@ -86,8 +86,8 @@ const Dynamic = ({ params }) => {
           <div className="text-white h-[40vh] w-full flex justify-center items-center">Data Not Available</div>
         )}
       </div>
-      <AddAnimalModal className={isAnimal ? "block" : "hidden"} setAnimal={setAnimal} />
-      <AddCategoryModal className={isCategory ? "block" : "hidden"} setIsCategory={setIsCategory} />
+      <CategoryModal className={isAnimal ? "block" : "hidden"} setAnimal={setAnimal} />
+      <AnimalModal className={isCategory ? "block" : "hidden"} setIsCategory={setIsCategory} />
     </main>
   );
 };

@@ -3,7 +3,7 @@ import LText from "../atoms/LText";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import useOutClick from "@/hooks/useOutClick";
 
-const AddCategoryModal = ({
+const AnimalModal = ({
   className = "",
   style = {},
   setIsCategory = null,
@@ -113,4 +113,4 @@ const AddCategoryModal = ({
   );
 };
 
-export default AddCategoryModal;
+export default AnimalModal;
